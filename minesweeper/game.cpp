@@ -13,13 +13,16 @@ mineMap::mineMap(int r, int c)
 {
     map_row = r;
     map_col = c;
-    remain_block = r * c;
-    map_data.resize(r, vector<int>(c, 0)); // 初始化全部为0
 }
     
 // 初始化雷格
 void mineMap::init_game()
 {
+    // 全部设0
+    for (int i = 0; i < row; i++)
+        for (int j = 0; j < col; j++)
+            map_data[i][j] = 0;
+    //埋雷
     for (int i = 0; i < mine_num;)
     {
         int x = rand() % map_row;
@@ -72,16 +75,17 @@ void mineMap::init_game()
 // 无操作   雷   周围雷数
 int mineMap::left_kick(int x, int y)
 {
-    remain_block --;
     if (map_data[x][y] > 8)
     { 
-        remain_block ++;
         return -2;
     }
     else if (map_data[x][y] == -1)
         return -1;
     else
+    { 
+        map_data[x][y] += 100; // 打开过的格子就+100
         return search_mine_around(x, y);
+    }
 }
 
 // 扫描周围8格的雷数
@@ -94,7 +98,7 @@ int mineMap::search_mine_around(int x, int y)
         {
             if (i >= 0 && i < map_row && j >= 0 && j < map_col) // 确保索引有效，出界则直接略过
             {
-                if (map_data[i][j] == -1)
+                if (map_data[i][j] == -1 || map_data[i][j] == 9||map_data[i][j] == 19)
                     mine_around_num++;
             }
         }
@@ -114,6 +118,10 @@ int mineMap::right_kick(int x, int y)
     {
         map_data[x][y] += 10;
         return 2;
+    }
+    else if (map_data[x][y] > 90)
+    {
+        return 3;
     }
     else
     {
@@ -175,6 +183,11 @@ void mineMap::display_map()
     writeLog("\n");
 }
 
+// 打开空格时会重复调用left_kick，用此函数消除影响
+void mineMap::recover_block(int x, int y)
+{
+    map_data[x][y] -= 100;
+}
 
 
 

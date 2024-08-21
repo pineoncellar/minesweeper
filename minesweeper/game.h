@@ -10,8 +10,8 @@ using std::find;
 class mineMap
 {
 private:
-    vector<vector<int>> map_data;
-    int map_row, map_col, remain_block;
+    int map_data[row][col] = { 0 };
+    int map_row, map_col;
 
     // 私有函数，修改数组中某一项的值
     void setItem(int x, int y, int value);
@@ -37,5 +37,7 @@ public:
     void display_map();
 
     void openBlankBlock(vector<array<int, 3>>& blank_block, int x, int  y);
+
+    void recover_block(int x, int y);
 };
 
