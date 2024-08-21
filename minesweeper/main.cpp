@@ -1,6 +1,8 @@
 ﻿//#define _CRT_SECURE_NO_WARNINGS 1
 #include "main.h"
 
+#define T true
+
 bool DEAD = false;
 bool WIN = false;
 
