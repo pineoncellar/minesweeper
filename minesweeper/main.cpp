@@ -7,7 +7,8 @@ int remain_block;
 
 int main()
 {
-    writeLog("\nstart.\n");
+    // 刷新随机数种子
+    srand((unsigned int)time(NULL));
     // 游戏初始化
     gui.init_ui();
     map.init_game();
@@ -30,8 +31,8 @@ int main()
                 mouse_y = *(mouse_action + 1);
                 
                 tmp_block_content = map.left_kick(mouse_x, mouse_y);
-                map.display_map();
-                cout << "x = " << mouse_x << " y = " << mouse_y << " tmp_block_content: " << tmp_block_content << std::endl;
+                // map.display_map();
+                // cout << "x = " << mouse_x << " y = " << mouse_y << " tmp_block_content: " << tmp_block_content << std::endl;
                 switch (tmp_block_content)
                 {
                     case -2: continue; // 此格被插旗，直接跳过
@@ -201,24 +202,33 @@ void music()
 
 int* get_mouse_action()
 {
-    // 定义消息结构体
+    // 获取鼠标消息
     ExMessage msg;
+    msg = getmessage();
+
+    // 检查按键
+    bool stat = gui.button_check(msg);
+    if (stat) // 重开游戏
+    {
+
+    }
+
+    // 分析鼠标按下的键
     static int mouse_res[3] = { 0 };
     mouse_res[2] = 0;
-    if (peekmessage(&msg, EM_MOUSE))
+    mouse_res[0] = msg.x / block_pixel; // 鼠标所点下的格子
+    mouse_res[1] = msg.y / block_pixel;
+
+    if (mouse_res[0] >= row) // 除去面板上的鼠标点击
+        return mouse_res;
+
+    if (msg.message == WM_LBUTTONDOWN) // 按下左键
     {
-        mouse_res[0] = msg.x / block_pixel; // 鼠标所点下的格子
-        mouse_res[1] = msg.y / block_pixel;
-
-
-        if (msg.message == WM_LBUTTONDOWN) // 左键
-        {
-            mouse_res[2] = 1;
-        }
-        else if (msg.message == WM_RBUTTONDOWN)// 右键
-        {
-            mouse_res[2] = 2;
-        }
+        mouse_res[2] = 1;
+    }
+    else if (msg.message == WM_RBUTTONDOWN)// 右键
+    {
+        mouse_res[2] = 2;
     }
     return mouse_res;
 }
@@ -232,7 +242,7 @@ int open_blank_block(int x, int y)
     tmp_block_content = map.left_kick(x, y);
     if (tmp_block_content == 0) // 此格为空，检测周围8格
     {
-        cout << "x = " << x << ", y = " << y << endl;
+        //cout << "x = " << x << ", y = " << y << endl;
         //remain_block--;
         for (int i = x - 1; i <= x + 1; i++)
         {
