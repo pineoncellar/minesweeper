@@ -140,6 +140,7 @@ bool mineGui::button_check(const ExMessage& msg)
     else if (change_style->state(msg))
     {
         cout << "change_style" << endl;
+        return false;
     }
 }
 

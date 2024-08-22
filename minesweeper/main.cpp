@@ -206,17 +206,33 @@ int* get_mouse_action()
     ExMessage msg;
     msg = getmessage();
 
+    static int mouse_res[3] = { 0 };
+    mouse_res[2] = 0;
+
     // 检查按键
     bool stat = gui.button_check(msg);
     if (stat) // 重开游戏
     {
-
+        while (true)
+        {
+            int ret = MessageBox(GetHWnd(), "要重新开始吗？", "hit", MB_OKCANCEL);
+            if (ret == IDOK)
+            {
+                // 新的一局
+                gui.init_ui();
+                map.init_game();
+                remain_block = row * col;
+                break;
+            }
+            else if (ret == IDCANCEL)
+            {
+                break;
+            }
+        }
     }
 
     // 分析鼠标按下的键
-    static int mouse_res[3] = { 0 };
-    mouse_res[2] = 0;
-    mouse_res[0] = msg.x / block_pixel; // 鼠标所点下的格子
+    mouse_res[0] = msg.x / block_pixel; // 计算鼠标所点下的格子
     mouse_res[1] = msg.y / block_pixel;
 
     if (mouse_res[0] >= row) // 除去面板上的鼠标点击
