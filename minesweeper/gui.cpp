@@ -104,7 +104,12 @@ mineGui::mineGui(int theme = 0)
     setbkcolor(LIGHTGRAY); // 背景颜色
     setbkmode(TRANSPARENT); // 字体背景
     setlinecolor(BLACK); // 线条颜色
-    cleardevice(); // 更新窗口状态，显示背景颜色
+    cleardevice(); // 显示背景颜色
+
+    rectangle(row * block_pixel + 10, 280, row * block_pixel + 90, 430); // 绘制矩形
+    settextstyle(22, 0, "微软雅黑");
+    RECT rect = { row * block_pixel + 10, 280, row * block_pixel + 90, 310 };
+    drawtext("更换主题", &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
     // 输入默认图片数组
     for (int i = 0; i < 10; i++)
@@ -133,12 +138,27 @@ mineGui::mineGui(int theme = 0)
         read_img(img_emoji_lose + i, "./images/emoji/lose/%d.png", i);
     }
     // 初始化按钮
-    restart = new Button(row * block_pixel + 12, 300, 75, 30, "重新开始");
-    change_style = new Button(row * block_pixel + 12, 350, 75, 30, "切换主题");
+    restart = new Button(row * block_pixel + 20, 200, 60, 30, "重新开始");
+    default_theme = new Button(row * block_pixel + 20, 310, 60, 30, "默认主题");
+    glass_theme = new Button(row * block_pixel + 20, 350, 60, 30, "青青草原");
+    classic_theme = new Button(row * block_pixel + 20, 390, 60, 30, "复古像素");
 }
 
 void mineGui::init_ui()
 {
+    /*
+    // 刷新一次界面，以免出现奇奇怪怪的bug
+    setbkcolor(LIGHTGRAY); // 背景颜色
+    setbkmode(TRANSPARENT); // 字体背景
+    setlinecolor(BLACK); // 线条颜色
+    cleardevice(); // 显示背景颜色
+    */
+
+    rectangle(row * block_pixel + 10, 280, row * block_pixel + 90, 430); // 绘制矩形
+    settextstyle(22, 0, "微软雅黑");
+    RECT rect = { row * block_pixel + 10, 280, row * block_pixel + 90, 310 };
+    drawtext("更换主题", &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
     // 初始化图像
     for (int i = 0; i < row; i++)
     {
@@ -148,9 +168,106 @@ void mineGui::init_ui()
         }
     }
     show_emoji(0);
-    // putimage(row * block_pixel, 0, img_panel + 0);
-    // putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_panel + 2);
+
+    /*
+    // 初始化按钮
+    restart = new Button(row * block_pixel + 20, 200, 60, 30, "重新开始");
+    default_theme = new Button(row * block_pixel + 20, 310, 60, 30, "默认主题");
+    glass_theme = new Button(row * block_pixel + 20, 350, 60, 30, "青青草原");
+    classic_theme = new Button(row * block_pixel + 20, 390, 60, 30, "复古像素");
+    */
 }
+
+void mineGui::change_theme(int theme, int map[row][col])
+{
+    // 读取新的图片数据
+    switch (theme)
+    {
+    case 1: // 默认
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            read_img(img_num + i, *(icon_default + i));
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            read_img(img_icon + i, *(icon_default + i + 10));
+        }
+        break;
+    }
+    case 2: // 草
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            read_img(img_num + i, *(icon_glass + i));
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            read_img(img_icon + i, *(icon_glass + i + 10));
+        }
+        break;
+    }
+    case 3: // 经典
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            read_img(img_num + i, *(icon_classic + i));
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            read_img(img_icon + i, *(icon_classic + i + 10));
+        }
+        break;
+    }
+    }
+    //绘制新界面
+    for (int x = 0; x < row; x++)
+    {
+        for (int y = 0; y < col; y++)
+        {
+            switch (map[x][y])
+            {
+            case -1:
+            case 0: // 未打开格
+            {
+                putimage(x * block_pixel, y * block_pixel, img_num + 9);
+                break;
+            }
+            case 9:
+            case 10: // 插旗
+            {
+                putimage(x * block_pixel, y * block_pixel, img_icon + 1);
+                break;
+            }
+            case 19:
+            case 20: // 设问
+            {
+                putimage(x * block_pixel, y * block_pixel, img_icon + 2);
+                break;
+            }
+            default: // 100，已打开格
+            {
+                // 计算周围雷格数量
+                int mine_around_num = 0;
+                for (int i = x - 1; i <= x + 1; i++)
+                {
+                    for (int j = y - 1; j <= y + 1; j++)
+                    {
+                        if (i >= 0 && i < row && j >= 0 && j < col) // 确保索引有效，出界则直接略过
+                        {
+                            if (map[i][j] == -1 || map[i][j] == 9 || map[i][j] == 19)
+                                mine_around_num++;
+                        }
+                    }
+                }
+                putimage(x * block_pixel, y * block_pixel, img_num + mine_around_num);
+                break;
+            }
+            }
+        }
+    }
+}
+
 
 // 在某格显示0-8图像
 void mineGui::left_kick_show(int x, int y, int num)
@@ -185,18 +302,30 @@ void mineGui::update_time()
     
 }
 
-bool mineGui::button_check(const ExMessage& msg)
+// 检查并更新按钮状态，返回某键被按下：-1-无，0-restart，1,2,3三个切换主题按键
+int mineGui::button_check(const ExMessage& msg)
 {
     if (restart->state(msg))
     {
         cout << "restart." << endl;
-        return true;
+        return 0;
     }
-    else if (change_style->state(msg))
+    else if (default_theme->state(msg))
     {
-        cout << "change_style" << endl;
-        return false;
+        cout << "default_theme" << endl;
+        return 1;
     }
+    else if (glass_theme->state(msg))
+    {
+        cout << "glass_theme" << endl;
+        return 2;
+    }
+    else if (classic_theme->state(msg))
+    {
+        cout << "classic_theme" << endl;
+        return 3;
+    }
+    return -1;
 }
 
 // 更新emoji表情，0-before, 1-playing, 2-win, 3-lose
@@ -227,7 +356,6 @@ void mineGui::show_emoji(int state)
     }
     }
 }
-
 
 Button::Button(int x, int y, int width, int height, const std::string& text)
 {

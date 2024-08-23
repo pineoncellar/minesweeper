@@ -69,6 +69,10 @@ void mouse_operation(int mouse_action[3])
         mouse_x = *(mouse_action + 0);
         mouse_y = *(mouse_action + 1);
 
+        // 如果手速太快，在点击边栏按钮之后马上点击地图格子，可能会导致将在边栏的鼠标坐标一起当做左键单击处理，故多加一层检测
+        if (mouse_x >= col)
+            break;
+
         tmp_block_content = map.left_kick(mouse_x, mouse_y);
         // map.display_map();
         switch (tmp_block_content)
@@ -163,8 +167,11 @@ int* get_mouse_action()
     mouse_res[2] = 0;
 
     // 检查按键
-    bool stat = gui.button_check(msg);
-    if (stat) // 重开游戏
+    int stat = gui.button_check(msg);
+    switch (stat)
+    {
+    case -1: break;
+    case 0: // 重开游戏
     {
         while (true)
         {
@@ -181,6 +188,13 @@ int* get_mouse_action()
             }
         }
     }
+    default: // 更换主题
+    {
+        gui.change_theme(stat, map.map_data);
+        break;
+    }
+    }
+    
 
     // 处理数据
     mouse_res[0] = msg.x / block_pixel; // 计算鼠标所点下的格子

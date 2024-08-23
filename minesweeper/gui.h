@@ -71,7 +71,9 @@ private:
     time_t now_time;
 
     Button* restart;
-    Button* change_style;
+    Button* default_theme;
+    Button* glass_theme;
+    Button* classic_theme;
 
 public:
     // 构造函数，显示初始化图像
@@ -88,9 +90,11 @@ public:
 
     void update_time();
 
-    bool button_check(const ExMessage& msg);
+    int button_check(const ExMessage& msg);
 
     void show_emoji(int state);
+
+    void change_theme(int theme, int map[row][col]);
 };
 
 void set_button_style(int state, Button button);
