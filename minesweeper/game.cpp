@@ -39,8 +39,9 @@ void mineMap::init_game()
     //埋雷
     for (int i = 0; i < mine_num;)
     {
-        int x = rand() % map_row;
-        int y = rand() % map_col; // 随机获取x, y, 之后再改取随机数方式
+        // dice()生成0 - (row*col)的随机数
+        int x = dice() / col;
+        int y = dice() / row;; // 随机获取x, y
 
         //std::cout << "i: " << i << "  x: " << x << "  y: " << y << std::endl;
         if (map_data[x][y] == 0) // 如果此格不为炸弹则设为炸弹
@@ -120,7 +121,7 @@ int mineMap::search_mine_around(int x, int y)
     return mine_around_num;
 }
 
-// 右键对某个插旗，设问或取消
+// 右键对某个插旗，设问或取消。返回：0-取消设问，1-插旗，2-设问，3-此格已被打开，忽略
 int mineMap::right_kick(int x, int y)
 {
     if (map_data[x][y] < 8)

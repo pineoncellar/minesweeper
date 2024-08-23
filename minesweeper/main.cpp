@@ -22,8 +22,6 @@ int remain_block;
 
 int main()
 {
-    // 刷新随机数种子
-    srand((unsigned int)time(NULL));
     // 游戏初始化
     minesweeper_init();
 
@@ -51,7 +49,15 @@ void minesweeper_init()
         if (*(mouse_action + 2) == 1) // 等待鼠标左键按下某格子
             break;
     }
-    // 按下左键后，直接进行处理
+    // 按下左键后游戏开始，进行预处理
+    int tmp_block_content = map.left_kick(*(mouse_action + 0), *(mouse_action + 1));
+    while (tmp_block_content != 0) // 使第一个打开的格子周围雷数为0，虽然做不到完全无猜，但也确保不会出现死亡猜雷的情况
+    {
+        map.init_game();
+        tmp_block_content = map.left_kick(*(mouse_action + 0), *(mouse_action + 1));
+    }
+    map.recover_block(*(mouse_action + 0), *(mouse_action + 1));
+
     mouse_operation(mouse_action);
     // 进入游戏中状态，更新ui
     gui.show_emoji(1);
@@ -74,7 +80,7 @@ void mouse_operation(int mouse_action[3])
             break;
 
         tmp_block_content = map.left_kick(mouse_x, mouse_y);
-        // map.display_map();
+        map.display_map();
         switch (tmp_block_content)
         {
         case -2: return; // 此格被插旗，直接跳过
@@ -134,13 +140,13 @@ void mouse_operation(int mouse_action[3])
         }
         break;
     }
-    case 2:
+    case 2: // 右键
     {
         mouse_x = *(mouse_action + 0);
         mouse_y = *(mouse_action + 1);
 
-        tmp_block_content = map.right_kick(mouse_x, mouse_y);
-        if (tmp_block_content != 3)
+        tmp_block_content = map.right_kick(mouse_x, mouse_y); // 获取此格内容
+        if (tmp_block_content != 3) // 若此格未被打开，则显示对应图案
             gui.right_kick_show(mouse_x, mouse_y, tmp_block_content);
         break;
     }

@@ -336,22 +336,22 @@ void mineGui::show_emoji(int state)
     case 0:
     {
         // 随机抽取一个表情放置
-        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_before + (rand() % emoji_before_num));
+        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_before + (dice() % emoji_before_num));
         break;
     }
     case 1:
     {
-        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_playing + (rand() % emoji_playing_num));
+        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_playing + (dice() % emoji_playing_num));
         break;
     }
     case 2:
     {
-        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_win + (rand() % emoji_win_num));
+        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_win + (dice() % emoji_win_num));
         break;
     }
     case 3:
     {
-        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_lose + (rand() % emoji_lose_num));
+        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_lose + (dice() % emoji_lose_num));
         break;
     }
     }

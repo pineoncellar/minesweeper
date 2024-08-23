@@ -23,10 +23,15 @@
 #include <easyx.h>
 #include <graphics.h>
 #include <time.h>
+#include <random>
+#include <functional>
 
 
 using std::string;
 using std::stringstream;
+using std::random_device;
+using std::mt19937_64;
+using std::uniform_int_distribution;
 
 #define block_pixel 50  // 格子像素数
 #define row 9           // 行数
@@ -40,4 +45,5 @@ using std::stringstream;
 #define emoji_lose_num 4
 
 bool writeLog(const string& strToWrite); // 日志记录函数
+int dice();
 
