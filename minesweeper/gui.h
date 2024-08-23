@@ -70,7 +70,7 @@ public:
 
     void right_kick_show(int x, int y, int num);
 
-    void mine_show();
+    void mine_show(int map[row][col]);
 
     void update_time();
 

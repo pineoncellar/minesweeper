@@ -40,7 +40,7 @@ int main()
                     {} 
                     case -1: // 此格是雷
                     {
-                        gui.mine_show();
+                        gui.mine_show(map.map_data);
                         while (true)
                         {
                             int ret = MessageBox(GetHWnd(), "你踩到雷了！", "hit", MB_OKCANCEL);

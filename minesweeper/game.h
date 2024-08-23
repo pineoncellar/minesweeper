@@ -10,13 +10,14 @@ using std::find;
 class mineMap
 {
 private:
-    int map_data[row][col] = { 0 };
     int map_row, map_col;
 
     // 私有函数，修改数组中某一项的值
     void setItem(int x, int y, int value);
 
 public:
+    int map_data[row][col] = { 0 };
+
     // 构造函数，初始化为r行c列的二维数组
     mineMap(int r, int c);
 

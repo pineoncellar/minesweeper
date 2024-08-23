@@ -154,9 +154,17 @@ void mineGui::right_kick_show(int x, int y, int num)
         putimage(x * block_pixel, y * block_pixel, img_icon + num);
 }
 
-void mineGui::mine_show()
+// 踩雷，显示所有雷格
+void mineGui::mine_show(int map[row][col])
 {
-    
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            if (map[i][j] == -1 || map[i][j] == 9 || map[i][j] == 19)
+                putimage(i * block_pixel, j * block_pixel, img_icon + 0);
+        }
+    }
 }
 
 void mineGui::update_time()
