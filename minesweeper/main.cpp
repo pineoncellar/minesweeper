@@ -1,4 +1,20 @@
-﻿//#define _CRT_SECURE_NO_WARNINGS 1
+﻿/*- encoding: utf-8 -*/
+/*
+██████╗  ██╗███╗      ██╗███████╗
+██╔══██╗██║████╗    ██║██╔════╝
+██████╔╝██║██╔██╗  ██║█████╗
+██╔═══╝  ██║██║╚██╗██║██╔══╝
+██║          ██║██║  ╚████║███████╗
+╚═╝          ╚═╝╚═╝    ╚═══╝╚══════╝
+
+@Author    :   地窖上的松
+@Contact   :   pine@hydroroll.team
+@License   :   DWTFYWWI LICENSE
+@Desc      :   扫雷主流程
+*/
+
+
+//#define _CRT_SECURE_NO_WARNINGS 1
 #include "main.h"
 
 mineGui gui(0);
@@ -56,7 +72,6 @@ void mouse_operation(int mouse_action[3])
 
         tmp_block_content = map.left_kick(mouse_x, mouse_y);
         // map.display_map();
-        // cout << "x = " << mouse_x << " y = " << mouse_y << " tmp_block_content: " << tmp_block_content << std::endl;
         switch (tmp_block_content)
         {
         case -2: return; // 此格被插旗，直接跳过
@@ -168,7 +183,7 @@ int* get_mouse_action()
         }
     }
 
-    // 分析鼠标按下的键
+    // 处理数据
     mouse_res[0] = msg.x / block_pixel; // 计算鼠标所点下的格子
     mouse_res[1] = msg.y / block_pixel;
 
@@ -195,13 +210,10 @@ int open_blank_block(int x, int y)
     tmp_block_content = map.left_kick(x, y);
     if (tmp_block_content == 0) // 此格为空，检测周围8格
     {
-        //cout << "x = " << x << ", y = " << y << endl;
-        //remain_block--;
         for (int i = x - 1; i <= x + 1; i++)
         {
             for (int j = y - 1; j <= y + 1; j++)
             {
-                //cout << "i = " << i << ", j = " << j << endl;
                 if (i >= 0 && i < row && j >= 0 && j < col) // 确保在棋盘内且不重复
                 {
                     open_blank_block(i, j);
