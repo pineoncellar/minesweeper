@@ -5,39 +5,67 @@ extern int button_color;
 extern int in_color;
 extern int click_clolor;
 
-string img_name[18] = {
-    "./images/0.png",
-    "./images/1.png",
-    "./images/2.png",
-    "./images/3.png",
-    "./images/4.png",
-    "./images/5.png",
-    "./images/6.png",
-    "./images/7.png",
-    "./images/8.png",
-    "./images/9.png",
-    "./images/mine.png",
-    "./images/flag.png",
-    "./images/puzzle.png",
-    "./images/panel.png",
-    "./images/emoji_before.png",
-    "./images/emoji_playing.png",
-    "./images/emoji_win.png",
-    "./images/emoji_lose.png",
+string icon_default[13] = {
+    "./images/default/0.png",
+    "./images/default/1.png",
+    "./images/default/2.png",
+    "./images/default/3.png",
+    "./images/default/4.png",
+    "./images/default/5.png",
+    "./images/default/6.png",
+    "./images/default/7.png",
+    "./images/default/8.png",
+    "./images/default/9.png",
+    "./images/default/mine.png",
+    "./images/default/flag.png",
+    "./images/default/puzzle.png",
 };
 
-// 从字符串路径读取图片
-void read_img(IMAGE img, string img_path_str)
+string icon_glass[13] = {
+    "./images/glass/0.png",
+    "./images/glass/1.png",
+    "./images/glass/2.png",
+    "./images/glass/3.png",
+    "./images/glass/4.png",
+    "./images/glass/5.png",
+    "./images/glass/6.png",
+    "./images/glass/7.png",
+    "./images/glass/8.png",
+    "./images/glass/9.png",
+    "./images/glass/mine.png",
+    "./images/glass/flag.png",
+    "./images/glass/puzzle.png",
+};
+
+string icon_classic[13] = {
+    "./images/classic/0.png",
+    "./images/classic/1.png",
+    "./images/classic/2.png",
+    "./images/classic/3.png",
+    "./images/classic/4.png",
+    "./images/classic/5.png",
+    "./images/classic/6.png",
+    "./images/classic/7.png",
+    "./images/classic/8.png",
+    "./images/classic/9.png",
+    "./images/classic/mine.png",
+    "./images/classic/flag.png",
+    "./images/classic/puzzle.png",
+};
+
+// 从单字符串路径读取图片
+void read_img(IMAGE *img, const char *img_path_str,int num, int r = block_pixel, int c = block_pixel)
 {
-    char img_path_char[block_pixel] = { 0 };
-    strcpy_s(img_path_char, img_path_str.c_str()); // 需先转化成char数组
-    loadimage(&img, img_path_char, block_pixel, block_pixel);
+    char img_path_char[50] = { 0 };
+    sprintf_s(img_path_char, img_path_str, num);
+    loadimage(img, img_path_char, r, c);
+    cout << "input emoji:" << img_path_char << endl;
 }
 
-// 重载，提供给图片数组使用
+// 重载，提供给字符串数组路径使用
 void read_img(IMAGE *img, string img_path_str, int r= block_pixel, int c = block_pixel)
 {
-    char img_path_char[block_pixel] = { 0 };
+    char img_path_char[50] = { 0 };
     strcpy_s(img_path_char, img_path_str.c_str()); // 需先转化成char数组
     loadimage(img, img_path_char, r, c);
 }
@@ -57,7 +85,7 @@ void set_button_style(int state, Button button)
     drawtext(button.text.c_str(), &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 }
 
-mineGui::mineGui()
+mineGui::mineGui(int theme = 0)
 {
     initgraph((row + 2) * block_pixel, col * block_pixel, EW_SHOWCONSOLE); // 初始化窗口
     setbkcolor(LIGHTGRAY); // 背景颜色
@@ -65,27 +93,35 @@ mineGui::mineGui()
     setlinecolor(BLACK); // 线条颜色
     cleardevice(); // 更新窗口状态，显示背景颜色
 
-    // 输入图片数组
+    // 输入默认图片数组
     for (int i = 0; i < 10; i++)
     {
-        read_img(img_num + i, *(img_name + i));
+        read_img(img_num + i, *(icon_default + i));
     }
     for (int i = 0; i < 3; i++)
     {
-        read_img(img_icon + i, *(img_name + i+10));
+        read_img(img_icon + i, *(icon_default + i+10));
     }
-    for (int i = 1; i < 5; i++)
+    // 输入emoji表情
+    for (int i = 0; i < emoji_before_num; i++)
     {
-        read_img(img_panel + i, *(img_name + i + 13));
+        read_img(img_emoji_before + i, "./images/emoji/before/%d.png", i);
     }
-    read_img(img_panel + 0, *(img_name + 13), 100,450);
-    /*
-    read_img(img_mine, *(img_name + 10));
-    read_img(img_flag, *(img_name + 11));
-    read_img(img_puzzle, *(img_name + 12));
-    read_img(img_panel, *(img_name + 13));
-    read_img(img_emoji_before, *(img_name + 14));
-    */
+    for (int i = 0; i < emoji_playing_num; i++)
+    {
+        read_img(img_emoji_playing + i, "./images/emoji/playing/%d.png", i);
+    }
+    for (int i = 0; i < emoji_win_num; i++)
+    {
+        read_img(img_emoji_win + i, "./images/emoji/win/%d.png", i);
+    }
+    for (int i = 0; i < emoji_lose_num; i++)
+    {
+        read_img(img_emoji_lose + i, "./images/emoji/lose/%d.png", i);
+    }
+    // 初始化按钮
+    restart = new Button(row * block_pixel + 12, 300, 75, 30, "重新开始");
+    change_style = new Button(row * block_pixel + 12, 350, 75, 30, "切换主题");
 }
 
 void mineGui::init_ui()
@@ -98,11 +134,9 @@ void mineGui::init_ui()
             putimage(j * block_pixel, i * block_pixel, img_num + 9);
         }
     }
+    show_emoji(0);
     // putimage(row * block_pixel, 0, img_panel + 0);
-    putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_panel + 2);
-
-    restart = new Button(row * block_pixel + 12, 300, 75, 30, "重新开始");
-    change_style = new Button(row * block_pixel + 12, 350, 75, 30, "切换主题");
+    // putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_panel + 2);
 }
 
 // 在某格显示0-8图像
@@ -141,6 +175,35 @@ bool mineGui::button_check(const ExMessage& msg)
     {
         cout << "change_style" << endl;
         return false;
+    }
+}
+
+// 更新emoji表情，0-before, 1-playing, 2-win, 3-lose
+void mineGui::show_emoji(int state)
+{
+    switch (state)
+    {
+    case 0:
+    {
+        // 随机抽取一个表情放置
+        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_before + (rand() % emoji_before_num));
+        break;
+    }
+    case 1:
+    {
+        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_before + (rand() % emoji_playing_num));
+        break;
+    }
+    case 2:
+    {
+        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_before + (rand() % emoji_win_num));
+        break;
+    }
+    case 3:
+    {
+        putimage((row + 0.5) * block_pixel, 0.5 * block_pixel, img_emoji_before + (rand() % emoji_lose_num));
+        break;
+    }
     }
 }
 

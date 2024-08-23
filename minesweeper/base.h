@@ -19,5 +19,11 @@ using std::stringstream;
 #define col 9           // 列数
 #define mine_num 10           // 列数
 
+// 各状态emoji数量
+#define emoji_before_num 2
+#define emoji_playing_num 2
+#define emoji_win_num 2
+#define emoji_lose_num 4
+
 bool writeLog(const string& strToWrite); // 日志记录函数
 

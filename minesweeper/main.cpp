@@ -1,7 +1,7 @@
 ﻿//#define _CRT_SECURE_NO_WARNINGS 1
 #include "main.h"
 
-mineGui gui;
+mineGui gui(0);
 mineMap map(row, col);
 int remain_block;
 
@@ -107,90 +107,6 @@ int main()
         std::cout << "x: " << *(mouse_action) << " y: " << *(mouse_action + 1) << " action: " << *(mouse_action + 2) << "  remain_block: " << remain_block << std::endl;
     }
 }
-
-/*
-int main()
-{
-    initgraph(Col * IMGW, Row * IMGW, EW_SHOWCONSOLE);
-    //播放开始音乐
-    //music();
-    srand((unsigned int)time(NULL));
-
-    int mine[Row][Col] = { 0 };//埋雷区数组
-
-    Showmine(mine);
-
-    //创造图片数组
-    IMAGE img[12];
-
-    for (int i = 0; i < 12; i++)
-    {
-        char filename[50] = { 0 };
-        sprintf_s(filename, "./images/%d.jpg", i);
-        loadimage(img + i, filename, IMGW, IMGW);
-    }
-    //主函数*************************************
-     //********************************************
-    while (true)
-    {
-        //鼠标操作
-        Mouseoperation(mine);
-        //转换数组数据到图形
-        drapmap(mine, img); // 每次循环更新一次地图
-        //判断生死
-        if (DEAD)//输了
-        {
-            int ret = MessageBox(GetHWnd(), "你踩到雷了！", "hit", MB_OKCANCEL);
-            if (ret == IDOK)
-            {
-                Showmine(mine);
-                showmap(mine);
-                DEAD = false;
-
-            }
-            else if (ret == IDCANCEL)
-            {
-                exit(502);
-            }
-        }
-        else if (WIN)
-        {
-            int ret = MessageBox(GetHWnd(), "你赢了！是否再来一局？", "hit", MB_OKCANCEL);
-            if (ret == IDOK)
-            {
-                Showmine(mine);
-                showmap(mine);
-                WIN = false;
-            }
-            else if (ret == IDCANCEL)
-            {
-                exit(502);
-            }
-
-        }
-        int count = 0;
-        for (int i = 0; i < Row; i++)
-        {
-            for (int j = 0; j < Col; j++)
-            {
-                if (mine[i][j] >= 0 && mine[i][j] <= 8)
-                {
-                    ++count;
-                }
-            }
-        }
-        // std::cout << "count = " << count << std::endl;
-        if (count == Row * Col - Num)
-        {
-            WIN = true;
-        }
-    }
-
-
-    getchar();
-    return 0;
-}
-*/
 
 /*
 void music()

@@ -41,17 +41,16 @@ class mineGui
 private:
     IMAGE img_num[10];
     IMAGE img_icon[3];
-    IMAGE img_panel[40];
+    IMAGE img_emoji_before[emoji_before_num];
+    IMAGE img_emoji_playing[emoji_playing_num];
+    IMAGE img_emoji_win[emoji_win_num];
+    IMAGE img_emoji_lose[emoji_lose_num];
 
     /*
     IMAGE img_mine;
     IMAGE img_flag;
     IMAGE img_puzzle;
     IMAGE img_panel;
-    IMAGE img_emoji_before;
-    IMAGE img_emoji_playing;
-    IMAGE img_emoji_win;
-    IMAGE img_emoji_lose;
     */
 
     time_t start_time;
@@ -62,7 +61,7 @@ private:
 
 public:
     // 构造函数，显示初始化图像
-    mineGui();
+    mineGui(int theme);
 
     void init_ui();
 
@@ -76,6 +75,8 @@ public:
     void update_time();
 
     bool button_check(const ExMessage& msg);
+
+    void show_emoji(int state);
 };
 
 void set_button_style(int state, Button button);
