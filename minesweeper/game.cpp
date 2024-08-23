@@ -1,3 +1,17 @@
+/*- encoding: utf-8 -*/
+/*
+██████╗  ██╗███╗      ██╗███████╗
+██╔══██╗██║████╗    ██║██╔════╝
+██████╔╝██║██╔██╗  ██║█████╗
+██╔═══╝  ██║██║╚██╗██║██╔══╝
+██║          ██║██║  ╚████║███████╗
+╚═╝          ╚═╝╚═╝    ╚═══╝╚══════╝
+
+@Author    :   地窖上的松
+@Contact   :   pine@hydroroll.team
+@License   :   DWTFYWWI LICENSE
+@Desc      :   扫雷后端数据处理
+*/
 #include "game.h"
 
 void mineMap::setItem(int x, int y, int value) 

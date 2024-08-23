@@ -1,3 +1,17 @@
+/*- encoding: utf-8 -*/
+/*
+██████╗  ██╗███╗      ██╗███████╗
+██╔══██╗██║████╗    ██║██╔════╝
+██████╔╝██║██╔██╗  ██║█████╗
+██╔═══╝  ██║██║╚██╗██║██╔══╝
+██║          ██║██║  ╚████║███████╗
+╚═╝          ╚═╝╚═╝    ╚═══╝╚══════╝
+
+@Author    :   地窖上的松
+@Contact   :   pine@hydroroll.team
+@License   :   DWTFYWWI LICENSE
+@Desc      :   扫雷前端gui头文件
+*/
 #pragma once
 #include "base.h"
 

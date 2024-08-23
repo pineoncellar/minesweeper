@@ -1,3 +1,17 @@
+/*- encoding: utf-8 -*/
+/*
+██████╗  ██╗███╗      ██╗███████╗
+██╔══██╗██║████╗    ██║██╔════╝
+██████╔╝██║██╔██╗  ██║█████╗
+██╔═══╝  ██║██║╚██╗██║██╔══╝
+██║          ██║██║  ╚████║███████╗
+╚═╝          ╚═╝╚═╝    ╚═══╝╚══════╝
+
+@Author    :   地窖上的松
+@Contact   :   pine@hydroroll.team
+@License   :   DWTFYWWI LICENSE
+@Desc      :   程序基础变量与函数头文件
+*/
 #pragma once
 #include <sstream>
 #include <fstream>

@@ -1,3 +1,17 @@
+/*- encoding: utf-8 -*/
+/*
+¨€¨€¨€¨€¨€¨€¨[  ¨€¨€¨[¨€¨€¨€¨[      ¨€¨€¨[¨€¨€¨€¨€¨€¨€¨€¨[
+¨€¨€¨X¨T¨T¨€¨€¨[¨€¨€¨U¨€¨€¨€¨€¨[    ¨€¨€¨U¨€¨€¨X¨T¨T¨T¨T¨a
+¨€¨€¨€¨€¨€¨€¨X¨a¨€¨€¨U¨€¨€¨X¨€¨€¨[  ¨€¨€¨U¨€¨€¨€¨€¨€¨[
+¨€¨€¨X¨T¨T¨T¨a  ¨€¨€¨U¨€¨€¨U¨^¨€¨€¨[¨€¨€¨U¨€¨€¨X¨T¨T¨a
+¨€¨€¨U          ¨€¨€¨U¨€¨€¨U  ¨^¨€¨€¨€¨€¨U¨€¨€¨€¨€¨€¨€¨€¨[
+¨^¨T¨a          ¨^¨T¨a¨^¨T¨a    ¨^¨T¨T¨T¨a¨^¨T¨T¨T¨T¨T¨T¨a
+
+@Author    :   µØ½ÑÉÏµÄËÉ
+@Contact   :   pine@hydroroll.team
+@License   :   DWTFYWWI LICENSE
+@Desc      :   É¨À×Ç°¶Ëgui
+*/
 #include "gui.h"
 
 extern int linestyle;
