@@ -59,7 +59,6 @@ void read_img(IMAGE *img, const char *img_path_str,int num, int r = block_pixel,
     char img_path_char[50] = { 0 };
     sprintf_s(img_path_char, img_path_str, num);
     loadimage(img, img_path_char, r, c);
-    cout << "input emoji:" << img_path_char << endl;
 }
 
 // 重载，提供给字符串数组路径使用
