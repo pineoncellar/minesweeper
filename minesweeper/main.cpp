@@ -40,13 +40,15 @@ int main()
                     {} 
                     case -1: // 此格是雷
                     {
+                        // 更新ui显示
                         gui.mine_show(map.map_data);
+                        gui.show_emoji(3);
                         while (true)
                         {
                             int ret = MessageBox(GetHWnd(), "你踩到雷了！", "hit", MB_OKCANCEL);
                             if (ret == IDOK)
                             {
-                                // 新的一局
+                                // 新的一局，重新初始化
                                 gui.init_ui();
                                 map.init_game();
                                 remain_block = row * col;
@@ -74,6 +76,8 @@ int main()
                     };
                 }
                 if (remain_block == mine_num) // 游戏胜利
+                {
+                    gui.show_emoji(2);
                     while (true)
                     {
                         int ret = MessageBox(GetHWnd(), "你胜利了！", "hit", MB_OKCANCEL);
@@ -90,6 +94,7 @@ int main()
                             exit(502);
                         }
                     }
+                }
                 break;
             }
             case 2: 
