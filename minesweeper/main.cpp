@@ -16,7 +16,7 @@
 //#define _CRT_SECURE_NO_WARNINGS 1
 #include "main.h"
 
-mineGui gui(0);
+mineGui gui;
 mineMap map(row, col);
 int remain_block;
 
@@ -80,7 +80,6 @@ void mouse_operation(int mouse_action[3])
             break;
 
         tmp_block_content = map.left_kick(mouse_x, mouse_y);
-        map.display_map();
         switch (tmp_block_content)
         {
         case -2: return; // 此格被插旗，直接跳过
@@ -152,6 +151,7 @@ void mouse_operation(int mouse_action[3])
     }
     default:break;
     }
+    //map.display_map();
     std::cout << "x: " << *(mouse_action) << " y: " << *(mouse_action + 1) << " action: " << *(mouse_action + 2) << "  remain_block: " << remain_block << std::endl;
 }
 
@@ -163,15 +163,18 @@ void music()
 }
 */
 
+// 鼠标信息获取
 int* get_mouse_action()
 {
-    // 获取鼠标消息
     ExMessage msg;
-    msg = getmessage();
+    // msg = getmessage(); // 这个函数会导致鼠标不动的时候程序停止
 
-    static int mouse_res[3] = { 0 };
-    mouse_res[2] = 0;
+    // 设为静态变量，当鼠标静止不动时，取上一次取到的坐标返回
+    static int mouse_res[3] = { 0 }; // 0-x坐标  1-y坐标  2-鼠标事件(0-无 1-左键按下 2-右键按下)
+    mouse_res[2] = 0; // 清除静态变量中的鼠标事件
 
+    if (peekmessage(&msg, EM_MOUSE))
+    { 
     // 检查按键
     int stat = gui.button_check(msg);
     switch (stat)
@@ -200,8 +203,6 @@ int* get_mouse_action()
         break;
     }
     }
-    
-
     // 处理数据
     mouse_res[0] = msg.x / block_pixel; // 计算鼠标所点下的格子
     mouse_res[1] = msg.y / block_pixel;
@@ -216,6 +217,7 @@ int* get_mouse_action()
     else if (msg.message == WM_RBUTTONDOWN)// 右键
     {
         mouse_res[2] = 2;
+    }
     }
     return mouse_res;
 }

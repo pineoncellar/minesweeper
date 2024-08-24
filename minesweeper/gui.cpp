@@ -68,7 +68,7 @@ string icon_classic[13] = {
 };
 
 // 从单字符串路径读取图片
-void read_img(IMAGE *img, const char *img_path_str,int num, int r = block_pixel, int c = block_pixel)
+void read_img(IMAGE *img, const char *img_path_str,int num = 0, int r = block_pixel, int c = block_pixel)
 {
     char img_path_char[50] = { 0 };
     sprintf_s(img_path_char, img_path_str, num);
@@ -98,7 +98,7 @@ void set_button_style(int state, Button button)
     drawtext(button.text.c_str(), &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 }
 
-mineGui::mineGui(int theme = 0)
+mineGui::mineGui()
 {
     initgraph((row + 2) * block_pixel, col * block_pixel, EW_SHOWCONSOLE); // 初始化窗口
     setbkcolor(LIGHTGRAY); // 背景颜色
@@ -120,6 +120,8 @@ mineGui::mineGui(int theme = 0)
     {
         read_img(img_icon + i, *(icon_default + i+10));
     }
+    // 输入时钟图片，需要不同的长宽
+    read_img(img_icon + 3, "./images/clock.jpg", 40, 80);
     // 输入emoji表情
     for (int i = 0; i < emoji_before_num; i++)
     {
@@ -168,6 +170,10 @@ void mineGui::init_ui()
         }
     }
     show_emoji(0);
+    // 初始化计时
+    last_second = -1;
+    start_time = clock();
+    this->update_time();
 
     /*
     // 初始化按钮
@@ -299,7 +305,25 @@ void mineGui::mine_show(int map[row][col])
 
 void mineGui::update_time()
 {
+    // 计算时间
+    time_t now_time;
+    int used_time, minute, second;
+    now_time = clock();
+    used_time = now_time - start_time;
+    second = used_time / 1000 % 60; // 秒
+    minute = used_time / (60 * 1000) % 60; // 分
+
+    if (second == last_second) // 减小更新频率，防止闪烁
+        return;
+    last_second = second;
     
+    char show_time[20] = {};
+    sprintf_s(show_time, "%02d:%02d", minute, second); // 格式化输出
+
+    settextstyle(27, 0, "微软雅黑");
+    RECT rect = { row * block_pixel, 100, row * block_pixel + 100, 150 };
+    putimage(row * block_pixel + 10, 100, img_icon + 3); // 显示图片，将旧的时间数字盖去
+    drawtext(show_time, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE); // 显示时间
 }
 
 // 检查并更新按钮状态，返回某键被按下：-1-无，0-restart，1,2,3三个切换主题按键
@@ -370,22 +394,24 @@ Button::Button(int x, int y, int width, int height, const std::string& text)
     set_button_style(0, *this);
 }
 
-// 按钮状态
+
+// 按钮状态检查
 bool Button::state(const ExMessage& msg)
 {
-    if (msg.message == WM_MOUSEMOVE && isIn(msg))	// 鼠标悬浮
+    if ((msg.message == WM_LBUTTONDOWN) && isIn(msg))	// 按钮被点击
+    {
+
+        set_button_style(2, *this);
+
+        change_flag = true;
+        return true;
+    }
+    else if (isIn(msg))	// 鼠标悬浮
     {
         set_button_style(1, *this);
 
         change_flag = true;
         return false;
-    }
-    else if ((msg.message == WM_LBUTTONUP) && isIn(msg))	// 按钮被点击
-    {
-        set_button_style(2, *this);
-
-        change_flag = true;
-        return true;
     }
     else	// 按钮状态改变时，恢复按钮原来的状态，防止屏闪
     {

@@ -54,7 +54,7 @@ class mineGui
 {
 private:
     IMAGE img_num[10];
-    IMAGE img_icon[3];
+    IMAGE img_icon[4]; // mine, flag, puzzle, clock
     IMAGE img_emoji_before[emoji_before_num];
     IMAGE img_emoji_playing[emoji_playing_num];
     IMAGE img_emoji_win[emoji_win_num];
@@ -68,7 +68,7 @@ private:
     */
 
     time_t start_time;
-    time_t now_time;
+    int last_second;
 
     Button* restart;
     Button* default_theme;
@@ -77,7 +77,7 @@ private:
 
 public:
     // 构造函数，显示初始化图像
-    mineGui(int theme);
+    mineGui();
 
     void init_ui();
 
