@@ -16,12 +16,16 @@
 //#define _CRT_SECURE_NO_WARNINGS 1
 #include "main.h"
 
+#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
+
 mineGui gui;
 mineMap map(row, col);
 int remain_block;
 
 int main()
 {
+    // 窗口初始化
+    gui.init_ui();
     // 游戏初始化
     minesweeper_init();
 
@@ -38,7 +42,7 @@ int main()
 void minesweeper_init()
 {
     // 游戏初始化
-    gui.init_ui();
+    gui.init_game();
     map.init_game();
     remain_block = row * col;
 
@@ -92,7 +96,7 @@ void mouse_operation(int mouse_action[3])
             gui.show_emoji(3);
             while (true) // 状态：游戏失败
             {
-                int ret = MessageBox(GetHWnd(), "你踩到雷了！", "hit", MB_OKCANCEL);
+                int ret = MessageBox(GetHWnd(), L"你踩到雷了！", L"hit", MB_OKCANCEL);
                 if (ret == IDOK)
                 {
                     // 新的一局，重新初始化
@@ -124,7 +128,7 @@ void mouse_operation(int mouse_action[3])
             gui.show_emoji(2);
             while (true) // 状态：游戏胜利
             {
-                int ret = MessageBox(GetHWnd(), "你胜利了！", "hit", MB_OKCANCEL);
+                int ret = MessageBox(GetHWnd(), L"你胜利了！", L"hit", MB_OKCANCEL);
                 if (ret == IDOK)
                 {
                     // 新的一局
@@ -151,8 +155,10 @@ void mouse_operation(int mouse_action[3])
     }
     default:break;
     }
-    //map.display_map();
-    std::cout << "x: " << *(mouse_action) << " y: " << *(mouse_action + 1) << " action: " << *(mouse_action + 2) << "  remain_block: " << remain_block << std::endl;
+    map.display_map();
+    stringstream ss;
+    ss << "x: " << *(mouse_action) << " y: " << *(mouse_action + 1) << " action: " << *(mouse_action + 2) << "  remain_block: " << remain_block << "\n";
+    writeLog(ss.str());
 }
 
 /*
@@ -174,50 +180,50 @@ int* get_mouse_action()
     mouse_res[2] = 0; // 清除静态变量中的鼠标事件
 
     if (peekmessage(&msg, EM_MOUSE))
-    { 
-    // 检查按键
-    int stat = gui.button_check(msg);
-    switch (stat)
     {
-    case -1: break;
-    case 0: // 重开游戏
-    {
-        while (true)
+        // 检查按键
+        int stat = gui.button_check(msg);
+        switch (stat)
         {
-            int ret = MessageBox(GetHWnd(), "要重新开始吗？", "hit", MB_OKCANCEL);
-            if (ret == IDOK)
+        case -1: break;
+        case 0: // 重开游戏
+        {
+            while (true)
             {
-                // 新的一局
-                minesweeper_init();
-                break;
-            }
-            else if (ret == IDCANCEL)
-            {
-                break;
+                int ret = MessageBox(GetHWnd(), L"要重新开始吗？", L"hit", MB_OKCANCEL);
+                if (ret == IDOK)
+                {
+                    // 新的一局
+                    minesweeper_init();
+                    break;
+                }
+                else if (ret == IDCANCEL)
+                {
+                    break;
+                }
             }
         }
-    }
-    default: // 更换主题
-    {
-        gui.change_theme(stat, map.map_data);
-        break;
-    }
-    }
-    // 处理数据
-    mouse_res[0] = msg.x / block_pixel; // 计算鼠标所点下的格子
-    mouse_res[1] = msg.y / block_pixel;
+        default: // 更换主题
+        {
+            gui.change_theme(stat, map.map_data);
+            break;
+        }
+        }
+        // 处理数据
+        mouse_res[0] = msg.x / block_pixel; // 计算鼠标所点下的格子
+        mouse_res[1] = msg.y / block_pixel;
 
-    if (mouse_res[0] >= row) // 除去面板上的鼠标点击
-        return mouse_res;
+        if (mouse_res[0] >= row) // 除去面板上的鼠标点击
+            return mouse_res;
 
-    if (msg.message == WM_LBUTTONDOWN) // 按下左键
-    {
-        mouse_res[2] = 1;
-    }
-    else if (msg.message == WM_RBUTTONDOWN)// 右键
-    {
-        mouse_res[2] = 2;
-    }
+        if (msg.message == WM_LBUTTONDOWN) // 按下左键
+        {
+            mouse_res[2] = 1;
+        }
+        else if (msg.message == WM_RBUTTONDOWN)// 右键
+        {
+            mouse_res[2] = 2;
+        }
     }
     return mouse_res;
 }
@@ -227,7 +233,7 @@ int* get_mouse_action()
 int open_blank_block(int x, int y)
 {
     int tmp_block_content;
-    
+
     tmp_block_content = map.left_kick(x, y);
     if (tmp_block_content == 0) // 此格为空，检测周围8格
     {

@@ -19,67 +19,67 @@ extern int button_color;
 extern int in_color;
 extern int click_clolor;
 
-string icon_default[13] = {
-    "./images/default/0.png",
-    "./images/default/1.png",
-    "./images/default/2.png",
-    "./images/default/3.png",
-    "./images/default/4.png",
-    "./images/default/5.png",
-    "./images/default/6.png",
-    "./images/default/7.png",
-    "./images/default/8.png",
-    "./images/default/9.png",
-    "./images/default/mine.png",
-    "./images/default/flag.png",
-    "./images/default/puzzle.png",
+wstring icon_default[13] = {
+    L"./images/default/0.png",
+    L"./images/default/1.png",
+    L"./images/default/2.png",
+    L"./images/default/3.png",
+    L"./images/default/4.png",
+    L"./images/default/5.png",
+    L"./images/default/6.png",
+    L"./images/default/7.png",
+    L"./images/default/8.png",
+    L"./images/default/9.png",
+    L"./images/default/mine.png",
+    L"./images/default/flag.png",
+    L"./images/default/puzzle.png",
 };
 
-string icon_glass[13] = {
-    "./images/glass/0.png",
-    "./images/glass/1.png",
-    "./images/glass/2.png",
-    "./images/glass/3.png",
-    "./images/glass/4.png",
-    "./images/glass/5.png",
-    "./images/glass/6.png",
-    "./images/glass/7.png",
-    "./images/glass/8.png",
-    "./images/glass/9.png",
-    "./images/glass/mine.png",
-    "./images/glass/flag.png",
-    "./images/glass/puzzle.png",
+wstring icon_glass[13] = {
+    L"./images/glass/0.png",
+    L"./images/glass/1.png",
+    L"./images/glass/2.png",
+    L"./images/glass/3.png",
+    L"./images/glass/4.png",
+    L"./images/glass/5.png",
+    L"./images/glass/6.png",
+    L"./images/glass/7.png",
+    L"./images/glass/8.png",
+    L"./images/glass/9.png",
+    L"./images/glass/mine.png",
+    L"./images/glass/flag.png",
+    L"./images/glass/puzzle.png",
 };
 
-string icon_classic[13] = {
-    "./images/classic/0.png",
-    "./images/classic/1.png",
-    "./images/classic/2.png",
-    "./images/classic/3.png",
-    "./images/classic/4.png",
-    "./images/classic/5.png",
-    "./images/classic/6.png",
-    "./images/classic/7.png",
-    "./images/classic/8.png",
-    "./images/classic/9.png",
-    "./images/classic/mine.png",
-    "./images/classic/flag.png",
-    "./images/classic/puzzle.png",
+wstring icon_classic[13] = {
+    L"./images/classic/0.png",
+    L"./images/classic/1.png",
+    L"./images/classic/2.png",
+    L"./images/classic/3.png",
+    L"./images/classic/4.png",
+    L"./images/classic/5.png",
+    L"./images/classic/6.png",
+    L"./images/classic/7.png",
+    L"./images/classic/8.png",
+    L"./images/classic/9.png",
+    L"./images/classic/mine.png",
+    L"./images/classic/flag.png",
+    L"./images/classic/puzzle.png",
 };
 
-// 从单字符串路径读取图片
-void read_img(IMAGE *img, const char *img_path_str,int num = 0, int r = block_pixel, int c = block_pixel)
+// 从字符串路径读取图片
+void read_img(IMAGE* img, const wchar_t* img_path_str, int num = 0, int r = block_pixel, int c = block_pixel)
 {
-    char img_path_char[50] = { 0 };
-    sprintf_s(img_path_char, img_path_str, num);
+    wchar_t img_path_char[50] = { 0 };
+    wsprintf(img_path_char, img_path_str, num);
     loadimage(img, img_path_char, r, c);
 }
 
 // 重载，提供给字符串数组路径使用
-void read_img(IMAGE *img, string img_path_str, int r= block_pixel, int c = block_pixel)
+void read_img(IMAGE* img, wstring img_path_str, int r = block_pixel, int c = block_pixel)
 {
-    char img_path_char[50] = { 0 };
-    strcpy_s(img_path_char, img_path_str.c_str()); // 需先转化成char数组
+    wchar_t img_path_char[50] = { 0 };
+    wcscpy_s(img_path_char, img_path_str.c_str()); // 需先转化成char数组
     loadimage(img, img_path_char, r, c);
 }
 
@@ -89,9 +89,9 @@ void set_button_style(int state, Button button)
     int color = state == 0 ? button.button_color : 1 ? button.in_color : button.click_clolor; // 根据state选取颜色
 
     // 设置样式
-    setlinestyle(button.linestyle , 1);
+    setlinestyle(button.linestyle, 1);
     setfillcolor(color);
-    settextstyle(20, 0, "微软雅黑");
+    settextstyle(20, 0, L"微软雅黑");
     // 绘制
     fillrectangle(button.x, button.y, button.x + button.width, button.y + button.height);
     RECT rect = { button.x, button.y, button.x + button.width, button.y + button.height };
@@ -100,17 +100,6 @@ void set_button_style(int state, Button button)
 
 mineGui::mineGui()
 {
-    initgraph((row + 2) * block_pixel, col * block_pixel, EW_SHOWCONSOLE); // 初始化窗口
-    setbkcolor(LIGHTGRAY); // 背景颜色
-    setbkmode(TRANSPARENT); // 字体背景
-    setlinecolor(BLACK); // 线条颜色
-    cleardevice(); // 显示背景颜色
-
-    rectangle(row * block_pixel + 10, 280, row * block_pixel + 90, 430); // 绘制矩形
-    settextstyle(22, 0, "微软雅黑");
-    RECT rect = { row * block_pixel + 10, 280, row * block_pixel + 90, 310 };
-    drawtext("更换主题", &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-
     // 输入默认图片数组
     for (int i = 0; i < 10; i++)
     {
@@ -118,48 +107,54 @@ mineGui::mineGui()
     }
     for (int i = 0; i < 3; i++)
     {
-        read_img(img_icon + i, *(icon_default + i+10));
+        read_img(img_icon + i, *(icon_default + i + 10));
     }
     // 输入时钟图片，需要不同的长宽
-    read_img(img_icon + 3, "./images/clock.jpg", 40, 80);
+    read_img(img_icon + 3, L"./images/clock.jpg", 40, 80);
     // 输入emoji表情
     for (int i = 0; i < emoji_before_num; i++)
     {
-        read_img(img_emoji_before + i, "./images/emoji/before/%d.png", i);
+        read_img(img_emoji_before + i, L"./images/emoji/before/%d.png", i);
     }
     for (int i = 0; i < emoji_playing_num; i++)
     {
-        read_img(img_emoji_playing + i, "./images/emoji/playing/%d.png", i);
+        read_img(img_emoji_playing + i, L"./images/emoji/playing/%d.png", i);
     }
     for (int i = 0; i < emoji_win_num; i++)
     {
-        read_img(img_emoji_win + i, "./images/emoji/win/%d.png", i);
+        read_img(img_emoji_win + i, L"./images/emoji/win/%d.png", i);
     }
     for (int i = 0; i < emoji_lose_num; i++)
     {
-        read_img(img_emoji_lose + i, "./images/emoji/lose/%d.png", i);
+        read_img(img_emoji_lose + i, L"./images/emoji/lose/%d.png", i);
     }
-    // 初始化按钮
-    restart = new Button(row * block_pixel + 20, 200, 60, 30, "重新开始");
-    default_theme = new Button(row * block_pixel + 20, 310, 60, 30, "默认主题");
-    glass_theme = new Button(row * block_pixel + 20, 350, 60, 30, "青青草原");
-    classic_theme = new Button(row * block_pixel + 20, 390, 60, 30, "复古像素");
 }
 
 void mineGui::init_ui()
 {
-    /*
-    // 刷新一次界面，以免出现奇奇怪怪的bug
+    initgraph((row + 2) * block_pixel, col * block_pixel, EW_SHOWCONSOLE); // 初始化窗口
     setbkcolor(LIGHTGRAY); // 背景颜色
     setbkmode(TRANSPARENT); // 字体背景
     setlinecolor(BLACK); // 线条颜色
     cleardevice(); // 显示背景颜色
-    */
 
     rectangle(row * block_pixel + 10, 280, row * block_pixel + 90, 430); // 绘制矩形
-    settextstyle(22, 0, "微软雅黑");
+    settextstyle(22, 0, L"微软雅黑");
     RECT rect = { row * block_pixel + 10, 280, row * block_pixel + 90, 310 };
-    drawtext("更换主题", &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    drawtext(L"更换主题", &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+    restart = new Button(row * block_pixel + 20, 200, 60, 30, L"重新开始"); // 初始化按钮
+    default_theme = new Button(row * block_pixel + 20, 310, 60, 30, L"默认主题");
+    glass_theme = new Button(row * block_pixel + 20, 350, 60, 30, L"青青草原");
+    classic_theme = new Button(row * block_pixel + 20, 390, 60, 30, L"复古像素");
+}
+
+void mineGui::init_game()
+{
+    rectangle(row * block_pixel + 10, 280, row * block_pixel + 90, 430); // 绘制矩形
+    settextstyle(22, 0, L"微软雅黑");
+    RECT rect = { row * block_pixel + 10, 280, row * block_pixel + 90, 310 };
+    drawtext(L"更换主题", &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
     // 初始化图像
     for (int i = 0; i < row; i++)
@@ -174,14 +169,6 @@ void mineGui::init_ui()
     last_second = -1;
     start_time = clock();
     this->update_time();
-
-    /*
-    // 初始化按钮
-    restart = new Button(row * block_pixel + 20, 200, 60, 30, "重新开始");
-    default_theme = new Button(row * block_pixel + 20, 310, 60, 30, "默认主题");
-    glass_theme = new Button(row * block_pixel + 20, 350, 60, 30, "青青草原");
-    classic_theme = new Button(row * block_pixel + 20, 390, 60, 30, "复古像素");
-    */
 }
 
 void mineGui::change_theme(int theme, int map[row][col])
@@ -316,11 +303,11 @@ void mineGui::update_time()
     if (second == last_second) // 减小更新频率，防止闪烁
         return;
     last_second = second;
-    
-    char show_time[20] = {};
-    sprintf_s(show_time, "%02d:%02d", minute, second); // 格式化输出
 
-    settextstyle(27, 0, "微软雅黑");
+    wchar_t show_time[20] = {};
+    wsprintf(show_time, L"%02d:%02d", minute, second); // 格式化输出
+
+    settextstyle(27, 0, L"微软雅黑");
     RECT rect = { row * block_pixel, 100, row * block_pixel + 100, 150 };
     putimage(row * block_pixel + 10, 100, img_icon + 3); // 显示图片，将旧的时间数字盖去
     drawtext(show_time, &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE); // 显示时间
@@ -331,22 +318,22 @@ int mineGui::button_check(const ExMessage& msg)
 {
     if (restart->state(msg))
     {
-        cout << "restart." << endl;
+        writeLog("restart.\n");
         return 0;
     }
     else if (default_theme->state(msg))
     {
-        cout << "default_theme" << endl;
+        writeLog("default_theme\n");
         return 1;
     }
     else if (glass_theme->state(msg))
     {
-        cout << "glass_theme" << endl;
+        writeLog("glass_theme\n");
         return 2;
     }
     else if (classic_theme->state(msg))
     {
-        cout << "classic_theme" << endl;
+        writeLog("classic_theme\n");
         return 3;
     }
     return -1;
@@ -381,7 +368,7 @@ void mineGui::show_emoji(int state)
     }
 }
 
-Button::Button(int x, int y, int width, int height, const std::string& text)
+Button::Button(int x, int y, int width, int height, const std::wstring& text)
 {
     // 变量初始化
     this->x = x;
@@ -425,13 +412,13 @@ bool Button::state(const ExMessage& msg)
 }
 
 // 获取按钮文本
-const std::string& Button::getText() const
+const std::wstring& Button::getText() const
 {
     return text;
 }
 
 // 设置按钮文本
-void Button::setText(const std::string& text)
+void Button::setText(const std::wstring& text)
 {
     this->text = text;
 }

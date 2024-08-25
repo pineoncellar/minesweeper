@@ -15,11 +15,6 @@
 #pragma once
 #include "base.h"
 
-using std::string;
-using std::stringstream;
-using std::cout;
-using std::endl;
-
 // 按钮类
 class Button
 {
@@ -32,15 +27,15 @@ private:
 
 protected:
     bool isIn(const ExMessage& msg) const;  // 判断鼠标是否在按钮里面
-    std::string text;                      // 按钮文本
+    wstring text;                      // 按钮文本
     bool change_flag;     // 按钮状态是否改变
 
 public:
-    Button(int x = 0, int y = 0, int width = 100, int height = 60, const std::string& text = "按钮");
+    Button(int x = 0, int y = 0, int width = 100, int height = 60, const std::wstring& text = L"按钮");
     bool state(const ExMessage& msg);       // 按钮状态
 
-    const std::string& getText() const;    // 获取按钮文本
-    void setText(const std::string& text); // 设置按钮文本
+    const wstring& getText() const;    // 获取按钮文本
+    void setText(const std::wstring& text); // 设置按钮文本
 
     //  按钮样式
     int linestyle = PS_SOLID;        //线条样式
@@ -80,6 +75,7 @@ public:
     mineGui();
 
     void init_ui();
+    void init_game();
 
     // 在某格显示0-8图像
     void left_kick_show(int x, int y, int num);

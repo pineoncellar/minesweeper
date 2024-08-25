@@ -15,12 +15,6 @@
 #pragma once
 #include "base.h"
 
-using std::vector;
-using std::tuple;
-using std::make_tuple;
-using std::array;
-using std::find;
-
 class mineMap
 {
 private:
@@ -50,8 +44,6 @@ public:
     int right_kick(int x, int y);
 
     void display_map();
-
-    void openBlankBlock(vector<array<int, 3>>& blank_block, int x, int  y);
 
     void recover_block(int x, int y);
 };

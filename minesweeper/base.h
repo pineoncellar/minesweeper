@@ -25,6 +25,7 @@
 #include <time.h>
 #include <random>
 #include <functional>
+#include <windows.h>
 
 
 using std::string;
@@ -32,6 +33,11 @@ using std::stringstream;
 using std::random_device;
 using std::mt19937_64;
 using std::uniform_int_distribution;
+using std::wstring;
+using std::cout;
+using std::endl;
+
+#define debug_mode true // 调试模式开关
 
 #define block_pixel 50  // 格子像素数
 #define row 9           // 行数
