@@ -27,7 +27,6 @@
 #include <functional>
 #include <windows.h>
 
-
 using std::string;
 using std::stringstream;
 using std::random_device;
@@ -51,5 +50,5 @@ using std::endl;
 #define emoji_lose_num 4
 
 bool writeLog(const string& strToWrite); // 日志记录函数
-int dice();
+int dice(); // 随机数生成函数
 

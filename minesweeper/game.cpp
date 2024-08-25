@@ -14,20 +14,8 @@
 */
 #include "game.h"
 
-void mineMap::setItem(int x, int y, int value)
-{
-    // 确保索引值正确
-    if (x >= 0 && x < map_row && y >= 0 && y < map_col)
-    {
-        map_data[x][y] = value;
-    }
-}
-
-mineMap::mineMap(int r, int c)
-{
-    map_row = r;
-    map_col = c;
-}
+mineMap::mineMap()
+{}
 
 // 初始化雷格
 void mineMap::init_game()
@@ -51,39 +39,6 @@ void mineMap::init_game()
         }
     }
 }
-
-/*
-// 打开某一格
-tuple<int, vector<array<int,3>>> open(int row, int col)
-{
-    vector<array<int,3>> blank_block(0);
-    //array<int, 3> newArray = { 4, 5, 6 };
-    //blank_block.push_back(newArray)
-    tuple<int, vector<array<int, 3>>> res;
-
-    if (map_data[row][col] == -1) // 踩雷
-    {
-        res = make_tuple(-1, blank_block);
-        return res;
-    }
-    else
-    {
-        int mine_around_num = search_mine_around(row, col);
-
-        if (mine_around_num != 0)
-        {
-            res = make_tuple(mine_around_num, blank_block);
-            return res;
-        }
-        else // 周围8格都没有雷，直接把所有的空格开了
-        {
-            openBlankBlock(blank_block, row, col);
-            res = make_tuple(0, blank_block);
-        }
-
-    }
-}
-*/
 
 // 左键打开一格，返回值：
 //   -2     -1     0-8     
@@ -111,7 +66,7 @@ int mineMap::search_mine_around(int x, int y)
     {
         for (int j = y - 1; j <= y + 1; j++)
         {
-            if (i >= 0 && i < map_row && j >= 0 && j < map_col) // 确保索引有效，出界则直接略过
+            if (i >= 0 && i < row && j >= 0 && j < col) // 确保索引有效，出界则直接略过
             {
                 if (map_data[i][j] == -1 || map_data[i][j] == 9 || map_data[i][j] == 19)
                     mine_around_num++;
@@ -145,6 +100,7 @@ int mineMap::right_kick(int x, int y)
     }
 }
 
+// 打印地图
 void mineMap::display_map()
 {
     writeLog("\n");

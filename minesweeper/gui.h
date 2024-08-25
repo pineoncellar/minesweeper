@@ -34,7 +34,6 @@ public:
     Button(int x = 0, int y = 0, int width = 100, int height = 60, const std::wstring& text = L"按钮");
     bool state(const ExMessage& msg);       // 按钮状态
 
-    const wstring& getText() const;    // 获取按钮文本
     void setText(const std::wstring& text); // 设置按钮文本
 
     //  按钮样式
@@ -77,20 +76,19 @@ public:
     void init_ui();
     void init_game();
 
-    // 在某格显示0-8图像
-    void left_kick_show(int x, int y, int num);
+    void left_kick_show(int x, int y, int num); // 在某格显示0-8图像
 
-    void right_kick_show(int x, int y, int num);
+    void right_kick_show(int x, int y, int num); // 在某格显示图标
 
-    void mine_show(int map[row][col]);
+    void mine_show(int map[row][col]); // 显示所有雷格
 
-    void update_time();
+    void update_time(); // 更新计时
 
-    int button_check(const ExMessage& msg);
+    int button_check(const ExMessage& msg); // 检查按钮状态
 
-    void show_emoji(int state);
+    void show_emoji(int state); // 显示emoji
 
-    void change_theme(int theme, int map[row][col]);
+    void change_theme(int theme, int map[row][col]); // 修改主题
 };
 
-void set_button_style(int state, Button button);
+void set_button_style(int state, Button button);  // 修改按钮样式

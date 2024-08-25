@@ -17,7 +17,7 @@
 
 bool writeLog(const string& strToWrite)
 {
-    if (!debug_mode)
+    if (!debug_mode) // 若非调试模式则直接关闭窗口
         return false;
 
     std::cout << strToWrite;
@@ -29,14 +29,9 @@ bool writeLog(const string& strToWrite)
         std::cerr << "Logger File Notationed fail open appended status 'std::ios::app'" << std::endl;
         return false;
     }
-
-    // 写入字符串到文件
-    loggerFile << strToWrite;
-
-    // 关闭文件
-    loggerFile.close();
-
-    // 成功写入
+ 
+    loggerFile << strToWrite; // 写入文件
+    loggerFile.close(); // 关闭文件
     return true;
 }
 

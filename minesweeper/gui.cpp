@@ -19,6 +19,7 @@ extern int button_color;
 extern int in_color;
 extern int click_clolor;
 
+// 主题图片路径列表
 wstring icon_default[13] = {
     L"./images/default/0.png",
     L"./images/default/1.png",
@@ -98,6 +99,7 @@ void set_button_style(int state, Button button)
     drawtext(button.text.c_str(), &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 }
 
+// 构造函数，读取图片
 mineGui::mineGui()
 {
     // 输入默认图片数组
@@ -130,6 +132,7 @@ mineGui::mineGui()
     }
 }
 
+// 程序开始前调用，初始化窗口
 void mineGui::init_ui()
 {
     initgraph((row + 2) * block_pixel, col * block_pixel, EW_SHOWCONSOLE); // 初始化窗口
@@ -149,6 +152,7 @@ void mineGui::init_ui()
     classic_theme = new Button(row * block_pixel + 20, 390, 60, 30, L"复古像素");
 }
 
+// 游戏开始前调用，初始化游戏地图
 void mineGui::init_game()
 {
     rectangle(row * block_pixel + 10, 280, row * block_pixel + 90, 430); // 绘制矩形
@@ -171,6 +175,7 @@ void mineGui::init_game()
     this->update_time();
 }
 
+// 修改主题
 void mineGui::change_theme(int theme, int map[row][col])
 {
     // 读取新的图片数据
@@ -411,11 +416,6 @@ bool Button::state(const ExMessage& msg)
     }
 }
 
-// 获取按钮文本
-const std::wstring& Button::getText() const
-{
-    return text;
-}
 
 // 设置按钮文本
 void Button::setText(const std::wstring& text)

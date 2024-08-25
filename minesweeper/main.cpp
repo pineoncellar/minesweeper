@@ -19,7 +19,7 @@
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
 
 mineGui gui;
-mineMap map(row, col);
+mineMap map;
 int remain_block;
 
 int main()
