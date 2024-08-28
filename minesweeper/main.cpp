@@ -27,7 +27,7 @@ int main()
     // 窗口初始化
     gui.init_ui();
     // 游戏初始化
-    minesweeper_init();
+    minesweeper_init(); // 状态：游戏开始前
 
     int* mouse_action;
     while (true) // 状态：游戏进行中
@@ -61,6 +61,8 @@ void minesweeper_init()
         tmp_block_content = map.left_kick(*(mouse_action + 0), *(mouse_action + 1));
     }
     map.recover_block(*(mouse_action + 0), *(mouse_action + 1));
+
+    gui.init_game(); // 重新初始化ui使计时清零
 
     mouse_operation(mouse_action);
     // 进入游戏中状态，更新ui
