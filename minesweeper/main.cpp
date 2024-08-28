@@ -16,7 +16,7 @@
 //#define _CRT_SECURE_NO_WARNINGS 1
 #include "main.h"
 
-#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
+#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" ) // 使游戏窗口成为主体
 
 mineGui gui;
 mineMap map;
