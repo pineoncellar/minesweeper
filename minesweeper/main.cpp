@@ -98,7 +98,7 @@ void mouse_operation(int mouse_action[3])
             gui.show_emoji(3);
             while (true) // 状态：游戏失败
             {
-                int ret = MessageBox(GetHWnd(), L"你踩到雷了！", L"hit", MB_OKCANCEL);
+                int ret = MessageBox(GetHWnd(), L"你踩到雷了！", L"啊喔", MB_OKCANCEL);
                 if (ret == IDOK)
                 {
                     // 新的一局，重新初始化
@@ -130,7 +130,7 @@ void mouse_operation(int mouse_action[3])
             gui.show_emoji(2);
             while (true) // 状态：游戏胜利
             {
-                int ret = MessageBox(GetHWnd(), L"你胜利了！", L"hit", MB_OKCANCEL);
+                int ret = MessageBox(GetHWnd(), L"你胜利了！", L"恭喜", MB_OKCANCEL);
                 if (ret == IDOK)
                 {
                     // 新的一局
@@ -192,7 +192,7 @@ int* get_mouse_action()
         {
             while (true)
             {
-                int ret = MessageBox(GetHWnd(), L"要重新开始吗？", L"hit", MB_OKCANCEL);
+                int ret = MessageBox(GetHWnd(), L"要重新开始吗？", L"", MB_OKCANCEL);
                 if (ret == IDOK)
                 {
                     // 新的一局
