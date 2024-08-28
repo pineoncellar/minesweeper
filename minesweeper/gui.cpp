@@ -116,19 +116,19 @@ mineGui::mineGui()
     // 输入emoji表情
     for (int i = 0; i < emoji_before_num; i++)
     {
-        read_img(img_emoji_before + i, L"./images/emoji/before/%d.png", i);
+        read_img(img_emoji_before + i, L"./images/emoji/before/%d.jpg", i);
     }
     for (int i = 0; i < emoji_playing_num; i++)
     {
-        read_img(img_emoji_playing + i, L"./images/emoji/playing/%d.png", i);
+        read_img(img_emoji_playing + i, L"./images/emoji/playing/%d.jpg", i);
     }
     for (int i = 0; i < emoji_win_num; i++)
     {
-        read_img(img_emoji_win + i, L"./images/emoji/win/%d.png", i);
+        read_img(img_emoji_win + i, L"./images/emoji/win/%d.jpg", i);
     }
     for (int i = 0; i < emoji_lose_num; i++)
     {
-        read_img(img_emoji_lose + i, L"./images/emoji/lose/%d.png", i);
+        read_img(img_emoji_lose + i, L"./images/emoji/lose/%d.jpg", i);
     }
 }
 
@@ -138,13 +138,20 @@ void mineGui::init_ui()
     initgraph((row + 2) * block_pixel, col * block_pixel, EW_SHOWCONSOLE); // 初始化窗口
     setbkcolor(LIGHTGRAY); // 背景颜色
     setbkmode(TRANSPARENT); // 字体背景
-    setlinecolor(BLACK); // 线条颜色
     cleardevice(); // 显示背景颜色
 
-    rectangle(row * block_pixel + 10, 280, row * block_pixel + 90, 430); // 绘制矩形
+    // 绘制主题列相关
+    setlinecolor(BLACK); // 线条颜色
+    rectangle(row * block_pixel + 10, 280, row * block_pixel + 90, 430);
     settextstyle(22, 0, L"微软雅黑");
     RECT rect = { row * block_pixel + 10, 280, row * block_pixel + 90, 310 };
     drawtext(L"更换主题", &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+    // 绘制emoji相关
+    setlinecolor(WHITE); // 线条颜色
+    setlinestyle(PS_SOLID, 3); // 线条样式
+    rectangle(474, 24, 525, 75); // emoji框
+
 
     restart = new Button(row * block_pixel + 20, 200, 60, 30, L"重新开始"); // 初始化按钮
     default_theme = new Button(row * block_pixel + 20, 310, 60, 30, L"默认主题");

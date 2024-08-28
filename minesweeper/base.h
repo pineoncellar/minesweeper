@@ -36,7 +36,7 @@ using std::wstring;
 using std::cout;
 using std::endl;
 
-#define debug_mode true // 调试模式开关
+#define debug_mode false // 调试模式开关
 
 #define block_pixel 50  // 格子像素数
 #define row 9           // 行数
