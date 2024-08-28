@@ -15,6 +15,7 @@
 
 #include "base.h"
 
+// 调试日志记录函数
 bool writeLog(const string& strToWrite)
 {
     if (!debug_mode) // 若非调试模式则直接关闭窗口

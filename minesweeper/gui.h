@@ -54,13 +54,6 @@ private:
     IMAGE img_emoji_win[emoji_win_num];
     IMAGE img_emoji_lose[emoji_lose_num];
 
-    /*
-    IMAGE img_mine;
-    IMAGE img_flag;
-    IMAGE img_puzzle;
-    IMAGE img_panel;
-    */
-
     time_t start_time;
     int last_second;
 
@@ -72,22 +65,14 @@ private:
 public:
     // 构造函数，显示初始化图像
     mineGui();
-
-    void init_ui();
-    void init_game();
-
+    void init_ui(); // 初始化窗口
+    void init_game(); // 初始化游戏地图
     void left_kick_show(int x, int y, int num); // 在某格显示0-8图像
-
     void right_kick_show(int x, int y, int num); // 在某格显示图标
-
     void mine_show(int map[row][col]); // 显示所有雷格
-
     void update_time(); // 更新计时
-
     int button_check(const ExMessage& msg); // 检查按钮状态
-
     void show_emoji(int state); // 显示emoji
-
     void change_theme(int theme, int map[row][col]); // 修改主题
 };
 
